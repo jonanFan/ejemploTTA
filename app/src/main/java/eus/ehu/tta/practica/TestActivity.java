@@ -60,10 +60,10 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
     public void showTestHelp(View view) {
         LinearLayout layout = findViewById(R.id.testLayout);
         RadioGroup choices = findViewById(R.id.testChoices);
-        String help = test.getChoices().get(selectedChoice).getAdvice();
+        String advice = test.getChoices().get(selectedChoice).getAdvice();
 
         TextView helpView = new TextView(this);
-        helpView.setText(help);
+        helpView.setText(advice);
         helpView.setVisibility(View.VISIBLE);
 
         layout.addView(helpView);
