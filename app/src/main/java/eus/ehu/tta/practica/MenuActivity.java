@@ -11,7 +11,8 @@ public class MenuActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        ((TextView) findViewById(R.id.menuTitle)).setText(getString(R.string.welcome) + " " + data.getUsername());
+        String text = getString(R.string.welcome) + " " + data.getUsername();
+        ((TextView) findViewById(R.id.menuTitle)).setText(text);
 
     }
 
@@ -20,11 +21,11 @@ public class MenuActivity extends BaseActivity {
     }
 
     public void newExercise(View view) {
-        startBaseActivity(EjercicioActivity.class);
+        startBaseActivity(ExerciseActivity.class);
     }
 
     public void newTracking(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
 
     }
 }

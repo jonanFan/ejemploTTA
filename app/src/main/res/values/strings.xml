@@ -17,4 +17,8 @@
     <string name="test_button">Nuevo Test</string>
     <string name="exercise_button">Nuevo Ejercicio</string>
     <string name="tracking_button">Seguimiento</string>
+    <string name="upload_file_button">Subir fichero</string>
+    <string name="take_photo_button">Sacar foto</string>
+    <string name="record_audio_button">Grabar audio</string>
+    <string name="record_video_button">Grabar video</string>
 </resources>

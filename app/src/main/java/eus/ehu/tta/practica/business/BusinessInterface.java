@@ -7,4 +7,6 @@ package eus.ehu.tta.practica.business;
 public interface BusinessInterface {
 
     boolean authenticate(String login, String password);
+
+    Exercise getExercise();
 }
