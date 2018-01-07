@@ -1,9 +1,13 @@
 package eus.ehu.tta.practica;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.URLUtil;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -71,12 +75,28 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
         String mimeType = test.getChoices().get(selectedChoice).getMimeType();
         String help = test.getChoices().get(selectedChoice).getHelp();
 
-        if (mimeType.compareTo(Choice.MIME_HTML) == 0) {
-            TextView helpView = new TextView(this);
-            helpView.setText(help);
-            helpView.setVisibility(View.VISIBLE);
+        findViewById(R.id.testHelpButton).setEnabled(false);
 
-            newView = helpView;
+        /*TextView helpView = new TextView(this);
+                helpView.setText(help);
+                helpView.setVisibility(View.VISIBLE);
+
+                newView = helpView;*/
+
+        if (mimeType.compareTo(Choice.MIME_HTML) == 0) {
+
+            if (URLUtil.isHttpsUrl(help) || URLUtil.isHttpUrl(help)) {
+                Uri uri = Uri.parse(help);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
+            } else {
+                WebView webView = new WebView(this);
+
+                webView.loadData(help, Choice.MIME_HTML, null);
+                webView.setBackgroundColor(Color.TRANSPARENT);
+                webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
+                newView = webView;
+            }
         } else if (mimeType.compareTo(Choice.MIME_AUDIO) == 0) {
 
             newView = new View(this);
@@ -114,7 +134,6 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
         if (newView != null)
             layout.addView(newView);
 
-        findViewById(R.id.testHelpButton).setEnabled(false);
     }
 
     @Override

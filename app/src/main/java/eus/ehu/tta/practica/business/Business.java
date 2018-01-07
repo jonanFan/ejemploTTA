@@ -25,8 +25,8 @@ public class Business implements BusinessInterface {
     public Test getTest() {
         List<Choice> choices = new ArrayList<>();
 
-        choices.add(new Choice("Versión de la aplicación", Choice.MIME_HTML, "The manifest describes the components of the application: the activities, services..."));
-        choices.add(new Choice("Listado de componentes de la aplicación", Choice.MIME_HTML, "The manifest describes the components of the application: the activities, services..."));
+        choices.add(new Choice("Versión de la aplicación", Choice.MIME_HTML, "<b>The manifest describes the components of the application</b>: the activities, services..."));
+        choices.add(new Choice("Listado de componentes de la aplicación", Choice.MIME_HTML, "https://egela1718.ehu.eus/"));
         choices.add(new Choice("Opciones del menú de ajustes", null, null));
         //  choices.add(new Choice("Nivel mínimo de la API Android requerida","video", "http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4"));
         // choices.add(new Choice("Nombre del paquete java de la aplicación","audio", "http://u017633.ehu.eus:28080/static/ServidorTta/AndroidManifest.mp4"));
