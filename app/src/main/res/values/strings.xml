@@ -21,4 +21,8 @@
     <string name="take_photo_button">Sacar foto</string>
     <string name="record_audio_button">Grabar audio</string>
     <string name="record_video_button">Grabar video</string>
+    <string name="send_button">Enviar</string>
+    <string name="help_button">Ver ayuda</string>
+    <string name="wrong_answer">¡Has fallado!</string>
+    <string name="correct_answer">¡Correcto!</string>
 </resources>

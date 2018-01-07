@@ -9,4 +9,6 @@ public interface BusinessInterface {
     boolean authenticate(String login, String password);
 
     Exercise getExercise();
+
+    Test getTest();
 }
