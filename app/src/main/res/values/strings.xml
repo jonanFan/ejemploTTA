@@ -11,4 +11,10 @@
     <string name="passwd_hint">Introduce password</string>
     <string name="login_error">Login incorrecto</string>
     <string name="not_filled">Se han de rellenar todos los campos</string>
+    <string name="not_implemented">No implementado todavia</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="lesson">Lección 1: Introducción</string>
+    <string name="test_button">Nuevo Test</string>
+    <string name="exercise_button">Nuevo Ejercicio</string>
+    <string name="tracking_button">Seguimiento</string>
 </resources>

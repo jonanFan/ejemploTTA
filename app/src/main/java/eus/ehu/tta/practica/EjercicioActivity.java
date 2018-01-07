@@ -9,4 +9,6 @@ public class EjercicioActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ejercicio);
     }
+
+
 }
