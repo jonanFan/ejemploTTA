@@ -9,4 +9,6 @@
     <string name="username_hint">Introduce DNI</string>
     <string name="passwd_label">Contraseña</string>
     <string name="passwd_hint">Introduce password</string>
+    <string name="login_error">Login incorrecto</string>
+    <string name="not_filled">Se han de rellenar todos los campos</string>
 </resources>
