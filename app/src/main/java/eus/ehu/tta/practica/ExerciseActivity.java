@@ -33,8 +33,10 @@ public class ExerciseActivity extends BaseActivity {
     }
 
     public void upload_file(View view) {
-        Toast.makeText(this, R.string.not_implemented, Toast.LENGTH_SHORT).show();
-
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, READ_REQUEST_CODE);
     }
 
     public void take_photo(View view) {
@@ -94,7 +96,11 @@ public class ExerciseActivity extends BaseActivity {
         switch (requestCode) {
             case READ_REQUEST_CODE:
             case VIDEO_REQUEST_CODE:
-            case AUDIO_REQUEST_CODE: //TODO ¿IMPLEMENTAR LA FUNCION QUE ENVIE LOS FILES AL SERVER? PREGUNTAR GORKA...
+            case AUDIO_REQUEST_CODE:
+                /*TODO
+                  ¿IMPLEMENTAR LA FUNCION QUE ENVIE LOS FILES AL SERVER? PREGUNTAR GORKA...
+                  Esto devuelve un contentResolver... Para acceder a los datos por el contentResolver necesito permisos de lectura?
+                */
                 Toast.makeText(this, data.getData().toString(), Toast.LENGTH_SHORT).show();
                 break;
             case PICTURE_REQUEST_CODE:
