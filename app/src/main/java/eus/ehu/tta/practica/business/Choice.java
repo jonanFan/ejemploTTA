@@ -5,21 +5,31 @@ package eus.ehu.tta.practica.business;
  */
 
 public class Choice {
+    public static final String MIME_HTML = "text/html";
+    public static final String MIME_AUDIO = "audio";
+    public static final String MIME_VIDEO = "video";
+
+
     private String wording;
-    private String advice;
+    private String mimeType;
+    private String help;
 
     public Choice() {
         this.wording = null;
-        this.advice = null;
+        this.help = null;
+        this.mimeType = null;
     }
 
     public Choice(String wording) {
         this.wording = wording;
+        this.help = null;
+        this.mimeType = null;
     }
 
-    public Choice(String wording, String advice) {
+    public Choice(String wording, String mimeType, String help) {
         this.wording = wording;
-        this.advice = advice;
+        this.help = help;
+        this.mimeType = mimeType;
     }
 
     public String getWording() {
@@ -30,11 +40,19 @@ public class Choice {
         this.wording = wording;
     }
 
-    public String getAdvice() {
-        return advice;
+    public String getHelp() {
+        return help;
     }
 
-    public void setAdvice(String advice) {
-        this.advice = advice;
+    public void setHelp(String help) {
+        this.help = help;
+    }
+
+    public String getMimeType() {
+        return mimeType;
+    }
+
+    public void setMimeType(String mimeType) {
+        this.mimeType = mimeType;
     }
 }

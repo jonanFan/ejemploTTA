@@ -8,9 +8,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import eus.ehu.tta.practica.business.Choice;
 import eus.ehu.tta.practica.business.Test;
+import eus.ehu.tta.practica.view.VideoPlayer;
+import eus.ehu.tta.practica.view.VideoPlayerInterface;
 
 public class TestActivity extends BaseActivity implements View.OnClickListener {
 
@@ -47,9 +50,10 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
             choices.getChildAt(selectedChoice).setBackgroundColor(Color.RED);
             Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
 
-            String advice = test.getChoices().get(selectedChoice).getAdvice();
+            String mimeType = test.getChoices().get(selectedChoice).getMimeType();
+            String help = test.getChoices().get(selectedChoice).getHelp();
 
-            if (advice != null && !advice.isEmpty())
+            if (mimeType != null && help != null && !help.isEmpty())
                 findViewById(R.id.testHelpButton).setVisibility(View.VISIBLE);
         } else
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
@@ -58,15 +62,36 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
     }
 
     public void showTestHelp(View view) {
+        View newView = null;
         LinearLayout layout = findViewById(R.id.testLayout);
         RadioGroup choices = findViewById(R.id.testChoices);
-        String advice = test.getChoices().get(selectedChoice).getAdvice();
+        String mimeType = test.getChoices().get(selectedChoice).getMimeType();
+        String help = test.getChoices().get(selectedChoice).getHelp();
 
-        TextView helpView = new TextView(this);
-        helpView.setText(advice);
-        helpView.setVisibility(View.VISIBLE);
+        if (mimeType.compareTo(Choice.MIME_HTML) == 0) {
+            TextView helpView = new TextView(this);
+            helpView.setText(help);
+            helpView.setVisibility(View.VISIBLE);
 
-        layout.addView(helpView);
+            newView = helpView;
+        } else if (mimeType.compareTo(Choice.MIME_AUDIO) == 0) {
+
+        } else if (mimeType.compareTo(Choice.MIME_VIDEO) == 0) {
+            newView = VideoPlayer.getVideoPlayer(this, help, new VideoPlayerInterface() {
+                @Override
+                public void onKeyBackPressed() {
+                    finish();
+                }
+            });
+
+            ((VideoView) newView).start();
+        } else {
+            Toast.makeText(this, R.string.wrong_mime, Toast.LENGTH_SHORT).show();
+
+        }
+
+        if (newView != null)
+            layout.addView(newView);
 
         findViewById(R.id.testHelpButton).setEnabled(false);
     }
