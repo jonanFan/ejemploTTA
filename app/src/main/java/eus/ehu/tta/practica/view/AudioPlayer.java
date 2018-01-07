@@ -38,9 +38,9 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     }
 
-    public void setAudioUri(Uri uri) throws IOException {
+    public void setAudioUri(String url) throws IOException {
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        player.setDataSource(view.getContext(), uri);
+        player.setDataSource(view.getContext(), Uri.parse(url));
         player.prepare();
         player.start();
     }

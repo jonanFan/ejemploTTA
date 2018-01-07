@@ -12,7 +12,7 @@ import android.widget.VideoView;
  */
 
 public class VideoPlayer {
-    public static VideoView getVideoPlayer(Context context, String url, final VideoPlayerInterface callback) {
+    public static VideoView getVideoPlayer(Context context, String url, final Runnable onExit) {
         VideoView video = new VideoView(context);
         video.setVideoURI(Uri.parse(url));
 
@@ -27,7 +27,7 @@ public class VideoPlayer {
             @Override
             public boolean dispatchKeyEvent(KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK)
-                    callback.onKeyBackPressed();
+                    onExit.run();
                 return super.dispatchKeyEvent(event);
             }
         };

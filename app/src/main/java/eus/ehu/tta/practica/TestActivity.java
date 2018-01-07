@@ -3,6 +3,7 @@ package eus.ehu.tta.practica;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -10,10 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.io.IOException;
+
 import eus.ehu.tta.practica.business.Choice;
 import eus.ehu.tta.practica.business.Test;
+import eus.ehu.tta.practica.view.AudioPlayer;
 import eus.ehu.tta.practica.view.VideoPlayer;
-import eus.ehu.tta.practica.view.VideoPlayerInterface;
 
 public class TestActivity extends BaseActivity implements View.OnClickListener {
 
@@ -76,10 +79,28 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
             newView = helpView;
         } else if (mimeType.compareTo(Choice.MIME_AUDIO) == 0) {
 
-        } else if (mimeType.compareTo(Choice.MIME_VIDEO) == 0) {
-            newView = VideoPlayer.getVideoPlayer(this, help, new VideoPlayerInterface() {
+            newView = new View(this);
+
+            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            newView.setLayoutParams(params);
+            AudioPlayer audioPlayer = new AudioPlayer(newView, new Runnable() {
                 @Override
-                public void onKeyBackPressed() {
+                public void run() {
+                    finish();
+                }
+            });
+
+            try {
+                audioPlayer.setAudioUri(help);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        } else if (mimeType.compareTo(Choice.MIME_VIDEO) == 0) {
+            newView = VideoPlayer.getVideoPlayer(this, help, new Runnable() {
+                @Override
+                public void run() {
                     finish();
                 }
             });
