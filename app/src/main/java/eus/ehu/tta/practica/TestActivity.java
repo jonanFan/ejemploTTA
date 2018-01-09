@@ -24,7 +24,7 @@ import eus.ehu.tta.practica.view.VideoPlayer;
 
 public class TestActivity extends BaseActivity implements View.OnClickListener {
 
-    private Test test; //TODO Preguntar a gorka si esto es posible
+    private Test test;
     private int selectedChoice;
 
     @Override

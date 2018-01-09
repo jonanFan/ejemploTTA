@@ -29,4 +29,5 @@
     <string name="no_app">No existe una app capaz de realizar dicha accion</string>
     <string name="no_camera">No hay camara</string>
     <string name="no_micro">No hay microfono</string>
+    <string name="no_write_permission">La aplicacion no tiene permisos de escritura</string>
 </resources>

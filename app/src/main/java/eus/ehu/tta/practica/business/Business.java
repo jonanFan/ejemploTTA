@@ -1,5 +1,7 @@
 package eus.ehu.tta.practica.business;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,5 +38,10 @@ public class Business implements BusinessInterface {
 
         return new Test("¿Cuál de las siguientes opciones NO se indica en el fichero de manifiesto de la app?", choices, 2);
 
+    }
+
+    @Override
+    public void sendFile(Uri uri) {
+        System.out.println("El URI del file a enviar es " + uri.toString());
     }
 }
