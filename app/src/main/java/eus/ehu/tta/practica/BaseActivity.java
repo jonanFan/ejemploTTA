@@ -12,7 +12,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private static final String URL = "http://u017633.ehu.eus:28080/ServidorTta/rest/tta";
     protected Data data;
-    protected RestClient rest;
+    private RestClient rest;
     protected BusinessServer business;
 
     @Override
@@ -20,6 +20,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         data = new Data(getIntent().getExtras()); //Recoge los datos del Data que le pasa la otra activity;
         rest = new RestClient(URL);
+
+        if (data.getUsername() != null) {
+            rest.setHttpBasicAuth(data.getUsername(), data.getPassword());
+        }
+
         business = new BusinessServer(rest);
     }
 

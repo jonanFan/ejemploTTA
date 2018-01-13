@@ -5,6 +5,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import eus.ehu.tta.practica.business.User;
+import eus.ehu.tta.practica.presentation.ProgressTask;
+
 public class LoginActivity extends BaseActivity {
 
     @Override
@@ -14,15 +17,36 @@ public class LoginActivity extends BaseActivity {
     }
 
     public void login(View view) {
-        String username = ((EditText) findViewById(R.id.username)).getText().toString();
-        String passwd = ((EditText) findViewById(R.id.passwd)).getText().toString();
+        final String username = ((EditText) findViewById(R.id.username)).getText().toString();
+        final String passwd = ((EditText) findViewById(R.id.passwd)).getText().toString();
 
         if (username.compareTo("") != 0 && passwd.compareTo("") != 0) {
-            if (business.authenticate(username, passwd)) {
+
+            new ProgressTask<User>(this, getString(R.string.login_text)) {
+
+                @Override
+                protected User background() throws Exception {
+                    return business.authenticate(username, passwd);
+                }
+
+                @Override
+                protected void onFinish(User result) {
+                    if (result != null) {
+
+                        data.putUsername(username);
+                        data.putPassword(passwd);
+                        data.putUser(result);
+                        startBaseActivity(MenuActivity.class);
+                    } else
+                        Toast.makeText(context, R.string.login_error, Toast.LENGTH_LONG).show();
+                }
+            }.execute();
+
+            /*if (business.authenticate(username, passwd) != null) {
                 data.putUsername(username);
                 startBaseActivity(MenuActivity.class);
             } else
-                Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.login_error, Toast.LENGTH_LONG).show();*/
         } else
             Toast.makeText(this, R.string.not_filled, Toast.LENGTH_LONG).show();
     }

@@ -11,9 +11,15 @@ import java.util.List;
 
 public class Business implements BusinessInterface {
     @Override
-    public boolean authenticate(String login, String password) {
+    public User authenticate(String login, String password) {
+        User user = null;
 
-        return password.compareTo("1234") == 0;
+        if (password.compareTo("1234") == 0) {
+            user = new User();
+            user.setUsername(login);
+        }
+
+        return user;
     }
 
     @Override

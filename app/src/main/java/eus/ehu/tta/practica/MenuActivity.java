@@ -5,14 +5,23 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import eus.ehu.tta.practica.business.User;
+
 public class MenuActivity extends BaseActivity {
+
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        String text = getString(R.string.welcome) + " " + data.getUsername();
-        ((TextView) findViewById(R.id.menuTitle)).setText(text);
+        user = data.getUser();
+
+        String menuTitle = getString(R.string.welcome) + " " + user.getUsername();
+        String lessonTitle = getString(R.string.lesson) + " " + user.getLessonNumber() + ": " + user.getLessonTitle();
+
+        ((TextView) findViewById(R.id.menuTitle)).setText(menuTitle);
+        ((TextView) findViewById(R.id.lessonTitle)).setText(lessonTitle);
 
     }
 

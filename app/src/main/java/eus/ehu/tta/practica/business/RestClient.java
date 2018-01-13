@@ -5,8 +5,10 @@ import android.util.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -30,14 +32,6 @@ public class RestClient {
         properties.put(AUTH, String.format("Basic %s", basicAuth));
     }
 
-    public String getAuthorization() {
-        return properties.get(AUTH);
-    }
-
-    public void setAuthorization(String auth) {
-        properties.put(AUTH, auth);
-    }
-
     public void setProperty(String name, String value) {
         properties.put(name, value);
     }
@@ -53,8 +47,48 @@ public class RestClient {
         return conn;
     }
 
+    public String getData(String path) throws IOException {
+        HttpURLConnection conn = null;
+        BufferedReader reader = null;
+        InputStreamReader inputStreamReader = null;
+        InputStream inputStream = null;
+        String data = null;
+
+        try {
+
+            conn = getConnection(path);
+            try {
+                if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    inputStream = conn.getInputStream();
+                    inputStreamReader = new InputStreamReader(inputStream);
+                    reader = new BufferedReader(inputStreamReader);
+                    data = reader.readLine();
+                }
+            } finally {
+                if (reader != null)
+                    reader.close();
+
+                if (inputStreamReader != null)
+                    inputStreamReader.close();
+
+                if (inputStream != null)
+                    inputStream.close();
+            }
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
+
+        return data;
+    }
+
     public JSONObject getJson(String path) throws IOException, JSONException {
-        return null;
+        String data = getData(path);
+        JSONObject json = null;
+
+        if (data != null)
+            json = new JSONObject(data);
+        return json;
     }
 
     public int postFile(String path, InputStream inputStream, String filename) throws IOException {
