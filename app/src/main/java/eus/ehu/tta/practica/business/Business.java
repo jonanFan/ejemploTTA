@@ -1,7 +1,8 @@
 package eus.ehu.tta.practica.business;
 
-import android.net.Uri;
+import android.util.Log;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +29,8 @@ public class Business implements BusinessInterface {
 
     @Override
     public Exercise getExercise(int index) {
-        Exercise exercise = new Exercise("Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android");
 
-        return exercise;
+        return new Exercise("Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android");
     }
 
     @Override
@@ -51,7 +51,14 @@ public class Business implements BusinessInterface {
     }
 
     @Override
-    public void sendFile(Uri uri) {
-        System.out.println("El URI del file a enviar es " + uri.toString());
+    public Boolean sendExercise(int userId, int exerciseId, InputStream inputStream, String filename) {
+        Log.d("BUSSINESS", "El filename del file a enviar es " + filename);
+        return Boolean.TRUE;
+    }
+
+    @Override
+    public Boolean sendTest(int userId, int choiceId) throws Exception {
+        Log.d("BUSSINESS", "El userId es " + userId + " y el choiceId es " + choiceId);
+        return Boolean.TRUE;
     }
 }

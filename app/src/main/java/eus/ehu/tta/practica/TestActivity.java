@@ -1,5 +1,6 @@
 package eus.ehu.tta.practica;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import java.io.IOException;
 
 import eus.ehu.tta.practica.business.Choice;
 import eus.ehu.tta.practica.business.Test;
+import eus.ehu.tta.practica.presentation.ProgressTask;
 import eus.ehu.tta.practica.view.AudioPlayer;
 import eus.ehu.tta.practica.view.VideoPlayer;
 
@@ -67,6 +69,27 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
 
         findViewById(R.id.testSendButton).setVisibility(View.GONE);
+        sendSolution(test.getChoices().get(selectedChoice).getId());
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    public void sendSolution(final int choiceId) {
+        final int userId = data.getUser().getId();
+
+        new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
+            @Override
+            protected Boolean background() throws Exception {
+                return business.sendTest(userId, choiceId);
+            }
+
+            @Override
+            protected void onFinish(Boolean result) {
+                if (!result)
+                   /* Toast.makeText(context, getString(R.string.send_ans_ok), Toast.LENGTH_SHORT).show();
+                else*/
+                    Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
     }
 
     public void showTestHelp(View view) {

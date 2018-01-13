@@ -35,4 +35,7 @@
     <string name="no_camera">No hay camara</string>
     <string name="no_micro">No hay microfono</string>
     <string name="no_write_permission">La aplicacion no tiene permisos de escritura</string>
+    <string name="sending_answer">Enviando respuesta…</string>
+    <string name="send_ans_ok">Respuesta enviada correctamente</string>
+    <string name="send_ans_error">Ha habido un error al enviar la respuesta</string>
 </resources>

@@ -6,9 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -64,6 +66,8 @@ public class RestClient {
                     reader = new BufferedReader(inputStreamReader);
                     data = reader.readLine();
                 }
+
+                return data;
             } finally {
                 if (reader != null)
                     reader.close();
@@ -78,8 +82,6 @@ public class RestClient {
             if (conn != null)
                 conn.disconnect();
         }
-
-        return data;
     }
 
     public JSONObject getJson(String path) throws IOException, JSONException {
@@ -92,11 +94,56 @@ public class RestClient {
     }
 
     public int postFile(String path, InputStream inputStream, String filename) throws IOException {
-        return 0;
+        String boundary = Long.toString(System.currentTimeMillis());
+        String newLine = "\r\n";
+        String prefix = "--";
+        HttpURLConnection conn = null;
+
+        try {
+            conn = getConnection(path);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            conn.setDoOutput(true);
+
+            DataOutputStream outputStream = new DataOutputStream(conn.getOutputStream());
+
+            outputStream.writeBytes(prefix + boundary + newLine);
+            outputStream.writeBytes("Content-Disposition: form-data; name=\"file\";filename=\"" + filename + "\"" + newLine);
+            outputStream.writeBytes(newLine);
+
+            byte[] data = new byte[1024 * 1024]; //Buffer intermedio para enviar el archivo
+            int len;
+
+            while ((len = inputStream.read(data)) > 0)
+                outputStream.write(data, 0, len);
+
+            outputStream.writeBytes(newLine);
+            outputStream.writeBytes(prefix + boundary + prefix + newLine);
+            outputStream.close();
+
+            return conn.getResponseCode();
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
     }
 
     public int postJson(final JSONObject json, String path) throws IOException {
-        return 0;
+
+        HttpURLConnection conn = null;
+
+        try {
+            conn = getConnection(path);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            PrintWriter printWriter = new PrintWriter(conn.getOutputStream());
+            printWriter.print(json.toString());
+            printWriter.close();
+            return conn.getResponseCode();
+        } finally {
+            if (conn != null)
+                conn.disconnect();
+        }
     }
 
 

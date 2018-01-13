@@ -11,12 +11,9 @@ public class Choice implements Serializable {
     public static final String MIME_AUDIO = "audio";
     public static final String MIME_VIDEO = "video";
 
-
-    public static final String wordingTag = "answer";
+    private int id;
     private String wording;
-    public static final String mimeTag = "mime";
     private String mimeType;
-    public static final String helpTag = "advise";
     private String help;
 
     public Choice() {
@@ -35,6 +32,14 @@ public class Choice implements Serializable {
         this.wording = wording;
         this.help = help;
         this.mimeType = mimeType;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getWording() {

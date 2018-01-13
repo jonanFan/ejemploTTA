@@ -1,6 +1,5 @@
 package eus.ehu.tta.practica.business;
 
-import android.net.Uri;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -8,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +100,30 @@ public class BusinessServer implements BusinessInterface {
     }
 
     @Override
-    public void sendFile(Uri uri) {
+    public Boolean sendExercise(int userId, int exerciseId, InputStream inputStream, String filename) throws IOException {
 
+        int httpResponseCode;
+
+        if (inputStream != null && filename != null && !filename.isEmpty()) {
+            httpResponseCode = rest.postFile(String.format("postExercise?user=%s&id=%s", userId, exerciseId), inputStream, filename);
+            if (httpResponseCode == HttpURLConnection.HTTP_OK || httpResponseCode == HttpURLConnection.HTTP_NO_CONTENT)
+                return Boolean.TRUE;
+        }
+
+        return Boolean.FALSE;
+    }
+
+    @Override
+    public Boolean sendTest(int userId, int choiceId) throws Exception {
+
+        JSONObject json = new JSONObject();
+        json.put("userId", userId);
+        json.put("choiceId", choiceId);
+        int httpResponseCode = rest.postJson(json, "postChoice");
+
+        if (httpResponseCode == HttpURLConnection.HTTP_OK || httpResponseCode == HttpURLConnection.HTTP_NO_CONTENT)
+            return Boolean.TRUE;
+
+        return Boolean.FALSE;
     }
 }

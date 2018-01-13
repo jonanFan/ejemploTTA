@@ -1,6 +1,7 @@
 package eus.ehu.tta.practica;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -19,9 +20,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import eus.ehu.tta.practica.business.Exercise;
+import eus.ehu.tta.practica.presentation.ProgressTask;
 
 public class ExerciseActivity extends BaseActivity {
 
@@ -77,7 +82,7 @@ public class ExerciseActivity extends BaseActivity {
                 File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
 
                 try {
-                    File file = File.createTempFile("tta", "jpg", dir);
+                    File file = File.createTempFile("tta", ".jpg", dir);
                     pictureUri = Uri.fromFile(file);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
                     startActivityForResult(intent, PICTURE_REQUEST_CODE);
@@ -140,6 +145,69 @@ public class ExerciseActivity extends BaseActivity {
         }
     }
 
+    @SuppressLint("StaticFieldLeak")
+    private void sendSolution(final Uri uri) {
+
+        new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
+            @Override
+            protected Boolean background() throws Exception {
+                InputStream inputStream = null;
+                String filename = null;
+
+                //Toast.makeText(this, "La uri es "+uri.toString(), Toast.LENGTH_SHORT).show();
+
+                try
+
+                {
+                    if (uri.toString().startsWith("file")) {
+                        try {
+                            inputStream = new FileInputStream(uri.toString().substring(7));
+                            String[] parts = uri.toString().split("/");
+                            filename = parts[parts.length - 1];
+                        } catch (FileNotFoundException ignored) {
+
+                        }
+                    } else {
+                        inputStream = getContentResolver().openInputStream(uri);
+                        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+
+                        try {
+                            if (cursor != null && cursor.moveToFirst()) {
+                                filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                            }
+                        } finally {
+                            if (cursor != null)
+                                cursor.close();
+                        }
+                    }
+
+
+                    // Toast.makeText(context, "Name: " + filename, Toast.LENGTH_SHORT).show();
+                    return business.sendExercise(data.getUser().getId(), data.getExercise().getId(), inputStream, filename);
+
+                } finally
+
+                {
+                    if (inputStream != null) {
+                        try {
+                            inputStream.close();
+                        } catch (IOException ignored) {
+
+                        }
+                    }
+                }
+            }
+
+            @Override
+            protected void onFinish(Boolean result) {
+                if (result)
+                    Toast.makeText(context, getString(R.string.send_ans_ok), Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
+            }
+        }.execute();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_OK)
@@ -148,14 +216,12 @@ public class ExerciseActivity extends BaseActivity {
         switch (requestCode) {
             case READ_REQUEST_CODE:
                 dumpMetadata(data.getData());
-                business.sendFile(data.getData());
-                break;
             case VIDEO_REQUEST_CODE:
             case AUDIO_REQUEST_CODE:
-                business.sendFile(data.getData());
+                sendSolution(data.getData());
                 break;
             case PICTURE_REQUEST_CODE:
-                business.sendFile(pictureUri);
+                sendSolution(pictureUri);
                 break;
         }
     }
