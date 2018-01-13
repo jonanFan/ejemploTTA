@@ -1,17 +1,22 @@
 package eus.ehu.tta.practica.business;
 
+import java.io.Serializable;
+
 /**
  * Created by jontx on 07/01/2018.
  */
 
-public class Choice {
+public class Choice implements Serializable {
     public static final String MIME_HTML = "text/html";
     public static final String MIME_AUDIO = "audio";
     public static final String MIME_VIDEO = "video";
 
 
+    public static final String wordingTag = "answer";
     private String wording;
+    public static final String mimeTag = "mime";
     private String mimeType;
+    public static final String helpTag = "advise";
     private String help;
 
     public Choice() {

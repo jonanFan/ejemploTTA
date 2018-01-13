@@ -1,12 +1,13 @@
 package eus.ehu.tta.practica.business;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by jontx on 07/01/2018.
  */
 
-public class Test {
+public class Test implements Serializable {
 
     private String heading;
     private int correctChoice;

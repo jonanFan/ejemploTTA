@@ -5,7 +5,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import eus.ehu.tta.practica.business.Exercise;
+import eus.ehu.tta.practica.business.Test;
 import eus.ehu.tta.practica.business.User;
+import eus.ehu.tta.practica.presentation.ProgressTask;
 
 public class MenuActivity extends BaseActivity {
 
@@ -26,11 +29,47 @@ public class MenuActivity extends BaseActivity {
     }
 
     public void newTest(View view) {
-        startBaseActivity(TestActivity.class);
+        new ProgressTask<Test>(this, getString(R.string.test_loading)) {
+
+            @Override
+            protected Test background() throws Exception {
+                return business.getTest(user.getNextTest());
+            }
+
+            @Override
+            protected void onFinish(Test result) {
+                if (result != null) {
+
+                    data.putTest(result);
+                    startBaseActivity(TestActivity.class);
+                } else
+                    Toast.makeText(context, R.string.test_error, Toast.LENGTH_LONG).show();
+            }
+        }.execute();
+        //startBaseActivity(TestActivity.class);
     }
 
     public void newExercise(View view) {
-        startBaseActivity(ExerciseActivity.class);
+        new ProgressTask<Exercise>(this, getString(R.string.exercise_loading)) {
+
+            @Override
+            protected Exercise background() throws Exception {
+                return business.getExercise(user.getNextExercise());
+            }
+
+            @Override
+            protected void onFinish(Exercise result) {
+                if (result != null) {
+
+                    data.putExercise(result);
+                    startBaseActivity(ExerciseActivity.class);
+                } else
+                    Toast.makeText(context, R.string.exercise_error, Toast.LENGTH_LONG).show();
+            }
+        }.execute();
+
+
+        //startBaseActivity(ExerciseActivity.class);
     }
 
     public void newTracking(View view) {

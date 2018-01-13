@@ -32,7 +32,8 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        test = business.getTest();
+        //test = business.getTest(1);
+        test = data.getTest();
         ((TextView) findViewById(R.id.testTitle)).setText(test.getHeading());
 
         RadioGroup choices = findViewById(R.id.testChoices);
@@ -97,7 +98,7 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
                 webView.setLayerType(WebView.LAYER_TYPE_SOFTWARE, null);
                 newView = webView;
             }
-        } else if (mimeType.compareTo(Choice.MIME_AUDIO) == 0) {
+        } else if (mimeType.startsWith(Choice.MIME_AUDIO)) {
 
             newView = new View(this);
 
@@ -117,7 +118,7 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
             }
 
 
-        } else if (mimeType.compareTo(Choice.MIME_VIDEO) == 0) {
+        } else if (mimeType.startsWith(Choice.MIME_VIDEO)) {
             newView = VideoPlayer.getVideoPlayer(this, help, new Runnable() {
                 @Override
                 public void run() {

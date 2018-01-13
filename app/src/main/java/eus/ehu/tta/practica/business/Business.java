@@ -16,21 +16,25 @@ public class Business implements BusinessInterface {
 
         if (password.compareTo("1234") == 0) {
             user = new User();
-            user.setUsername(login);
+            user.setUsername("JUAN");
+            user.setNextTest(1);
+            user.setNextExercise(1);
+            user.setLessonNumber(1);
+            user.setLessonTitle("Introducción");
         }
 
         return user;
     }
 
     @Override
-    public Exercise getExercise() {
+    public Exercise getExercise(int index) {
         Exercise exercise = new Exercise("Explica cómo aplicarías el patrón de diseño MVP en el desarrollo de una app para Android");
 
         return exercise;
     }
 
     @Override
-    public Test getTest() {
+    public Test getTest(int index) {
         List<Choice> choices = new ArrayList<>();
 
         choices.add(new Choice("Versión de la aplicación", Choice.MIME_HTML, "<b>The manifest describes the components of the application</b>: the activities, services..."));

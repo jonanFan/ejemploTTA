@@ -37,7 +37,8 @@ public class ExerciseActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
-        Exercise exercise = business.getExercise();
+        //Exercise exercise = business.getExercise(1);
+        Exercise exercise = data.getExercise();
         ((TextView) findViewById(R.id.exerciseTitle)).setText(exercise.getHeading());
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -80,7 +81,7 @@ public class ExerciseActivity extends BaseActivity {
                     pictureUri = Uri.fromFile(file);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri);
                     startActivityForResult(intent, PICTURE_REQUEST_CODE);
-                } catch (IOException ex) {
+                } catch (IOException ignored) {
                 }
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_PERMISSION_CODE);
@@ -124,7 +125,7 @@ public class ExerciseActivity extends BaseActivity {
             if (cursor != null && cursor.moveToFirst()) {
                 String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                 int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
-                String size = null;
+                String size;
 
                 if (!cursor.isNull(sizeIndex))
                     size = cursor.getString(sizeIndex);
@@ -134,7 +135,8 @@ public class ExerciseActivity extends BaseActivity {
                 Toast.makeText(this, "Name: " + displayName + " and Size: " + size, Toast.LENGTH_SHORT).show();
             }
         } finally {
-            cursor.close();
+            if (cursor != null)
+                cursor.close();
         }
     }
 

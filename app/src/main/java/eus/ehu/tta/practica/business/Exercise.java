@@ -1,10 +1,14 @@
 package eus.ehu.tta.practica.business;
 
+import java.io.Serializable;
+
 /**
  * Created by jontx on 07/01/2018.
  */
 
-public class Exercise {
+public class Exercise implements Serializable {
+
+    private int id;
     private String heading;
 
     public Exercise() {
@@ -13,6 +17,14 @@ public class Exercise {
 
     public Exercise(String heading) {
         this.heading = heading;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getHeading() {
