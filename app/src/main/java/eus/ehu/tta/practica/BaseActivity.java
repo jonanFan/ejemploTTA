@@ -1,12 +1,15 @@
 package eus.ehu.tta.practica;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import eus.ehu.tta.practica.business.BusinessServer;
 import eus.ehu.tta.practica.business.RestClient;
 import eus.ehu.tta.practica.presentation.Data;
+import eus.ehu.tta.practica.presentation.NetworkReceiver;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -14,6 +17,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected Data data;
     private RestClient rest;
     protected BusinessServer business;
+    protected NetworkReceiver network;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,20 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         business = new BusinessServer(rest);
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        network = new NetworkReceiver();
+        this.registerReceiver(network, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (network != null) {
+            this.unregisterReceiver(network);
+            network = null;
+        }
     }
 
     protected <T> void startBaseActivity(Class<T> tClass) {

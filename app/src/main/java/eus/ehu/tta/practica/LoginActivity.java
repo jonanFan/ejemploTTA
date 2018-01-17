@@ -22,26 +22,28 @@ public class LoginActivity extends BaseActivity {
 
         if (username.compareTo("") != 0 && passwd.compareTo("") != 0) {
 
-            new ProgressTask<User>(this, getString(R.string.login_text)) {
+            if (network.isConnected()) {
+                new ProgressTask<User>(this, getString(R.string.login_text)) {
 
-                @Override
-                protected User background() throws Exception {
-                    return business.authenticate(username, passwd);
-                }
+                    @Override
+                    protected User background() throws Exception {
+                        return business.authenticate(username, passwd);
+                    }
 
-                @Override
-                protected void onFinish(User result) {
-                    if (result != null) {
+                    @Override
+                    protected void onFinish(User result) {
+                        if (result != null) {
 
-                        data.putUsername(username);
-                        data.putPassword(passwd);
-                        data.putUser(result);
-                        startBaseActivity(MenuActivity.class);
-                    } else
-                        Toast.makeText(context, R.string.login_error, Toast.LENGTH_LONG).show();
-                }
-            }.execute();
-
+                            data.putUsername(username);
+                            data.putPassword(passwd);
+                            data.putUser(result);
+                            startBaseActivity(MenuActivity.class);
+                        } else
+                            Toast.makeText(context, R.string.login_error, Toast.LENGTH_LONG).show();
+                    }
+                }.execute();
+            } else
+                Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
             /*if (business.authenticate(username, passwd) != null) {
                 data.putUsername(username);
                 startBaseActivity(MenuActivity.class);

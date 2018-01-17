@@ -38,4 +38,5 @@
     <string name="sending_answer">Enviando respuesta…</string>
     <string name="send_ans_ok">Respuesta enviada correctamente</string>
     <string name="send_ans_error">Ha habido un error al enviar la respuesta</string>
+    <string name="no_internet">La aplicacion no se puede conectar al servidor, compruebe la conexion</string>
 </resources>

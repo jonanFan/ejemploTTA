@@ -29,45 +29,53 @@ public class MenuActivity extends BaseActivity {
     }
 
     public void newTest(View view) {
-        new ProgressTask<Test>(this, getString(R.string.test_loading)) {
 
-            @Override
-            protected Test background() throws Exception {
-                return business.getTest(user.getNextTest());
-            }
+        if (network.isConnected()) {
 
-            @Override
-            protected void onFinish(Test result) {
-                if (result != null) {
+            new ProgressTask<Test>(this, getString(R.string.test_loading)) {
 
-                    data.putTest(result);
-                    startBaseActivity(TestActivity.class);
-                } else
-                    Toast.makeText(context, R.string.test_error, Toast.LENGTH_LONG).show();
-            }
-        }.execute();
+                @Override
+                protected Test background() throws Exception {
+                    return business.getTest(user.getNextTest());
+                }
+
+                @Override
+                protected void onFinish(Test result) {
+                    if (result != null) {
+
+                        data.putTest(result);
+                        startBaseActivity(TestActivity.class);
+                    } else
+                        Toast.makeText(context, R.string.test_error, Toast.LENGTH_LONG).show();
+                }
+            }.execute();
+        } else
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
         //startBaseActivity(TestActivity.class);
     }
 
     public void newExercise(View view) {
-        new ProgressTask<Exercise>(this, getString(R.string.exercise_loading)) {
+        if (network.isConnected()) {
 
-            @Override
-            protected Exercise background() throws Exception {
-                return business.getExercise(user.getNextExercise());
-            }
+            new ProgressTask<Exercise>(this, getString(R.string.exercise_loading)) {
 
-            @Override
-            protected void onFinish(Exercise result) {
-                if (result != null) {
+                @Override
+                protected Exercise background() throws Exception {
+                    return business.getExercise(user.getNextExercise());
+                }
 
-                    data.putExercise(result);
-                    startBaseActivity(ExerciseActivity.class);
-                } else
-                    Toast.makeText(context, R.string.exercise_error, Toast.LENGTH_LONG).show();
-            }
-        }.execute();
+                @Override
+                protected void onFinish(Exercise result) {
+                    if (result != null) {
 
+                        data.putExercise(result);
+                        startBaseActivity(ExerciseActivity.class);
+                    } else
+                        Toast.makeText(context, R.string.exercise_error, Toast.LENGTH_LONG).show();
+                }
+            }.execute();
+        } else
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
 
         //startBaseActivity(ExerciseActivity.class);
     }

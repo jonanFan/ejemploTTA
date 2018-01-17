@@ -25,6 +25,16 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
         player.setOnPreparedListener(this);
 
         controller = new MediaController(view.getContext()) {
+           /* @Override
+            public void hide() {
+
+            }*/
+
+            @Override
+            public void show(int timeout) {
+                super.show(0);
+            }
+
             @Override
             public boolean dispatchKeyEvent(KeyEvent event) {
                 if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
@@ -54,12 +64,14 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public void start() {
-        player.start();
+        if (player != null)
+            player.start();
     }
 
     @Override
     public void pause() {
-        player.pause();
+        if (player != null)
+            player.pause();
     }
 
     public void release() {
@@ -72,22 +84,24 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public int getDuration() {
-        return player.getDuration();
+        return player != null ? player.getDuration() : 0;
     }
 
     @Override
     public int getCurrentPosition() {
-        return player.getCurrentPosition();
+        return player != null ? player.getCurrentPosition() : 0;
     }
 
     @Override
     public void seekTo(int pos) {
-        player.seekTo(pos);
+
+        if (player != null)
+            player.seekTo(pos);
     }
 
     @Override
     public boolean isPlaying() {
-        return player.isPlaying();
+        return player != null ? player.isPlaying() : false;
     }
 
     @Override
@@ -112,6 +126,6 @@ public class AudioPlayer implements MediaController.MediaPlayerControl, MediaPla
 
     @Override
     public int getAudioSessionId() {
-        return player.getAudioSessionId();
+        return player != null ? player.getAudioSessionId() : 0;
     }
 }

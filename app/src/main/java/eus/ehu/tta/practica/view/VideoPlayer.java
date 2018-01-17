@@ -20,8 +20,13 @@ public class VideoPlayer {
         video.setLayoutParams(params);
 
         MediaController controller = new MediaController(context) {
-            @Override
+            /*@Override
             public void hide() { //Con esto conseguimos que no se escondan los controles
+            }*/
+
+            @Override
+            public void show(int timeout) {
+                super.show(0);
             }
 
             @Override
