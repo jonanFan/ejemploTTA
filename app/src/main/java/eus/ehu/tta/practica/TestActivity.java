@@ -76,20 +76,24 @@ public class TestActivity extends BaseActivity implements View.OnClickListener {
     public void sendSolution(final int choiceId) {
         final int userId = data.getUser().getId();
 
-        new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
-            @Override
-            protected Boolean background() throws Exception {
-                return business.sendTest(userId, choiceId);
-            }
+        if (network.isConnected()) {
 
-            @Override
-            protected void onFinish(Boolean result) {
-                if (!result)
+            new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
+                @Override
+                protected Boolean background() throws Exception {
+                    return business.sendTest(userId, choiceId);
+                }
+
+                @Override
+                protected void onFinish(Boolean result) {
+                    if (!result)
                    /* Toast.makeText(context, getString(R.string.send_ans_ok), Toast.LENGTH_SHORT).show();
                 else*/
-                    Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
-            }
-        }.execute();
+                        Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
+                }
+            }.execute();
+        } else
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
     }
 
     public void showTestHelp(View view) {

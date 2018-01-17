@@ -147,65 +147,68 @@ public class ExerciseActivity extends BaseActivity {
 
     @SuppressLint("StaticFieldLeak")
     private void sendSolution(final Uri uri) {
+        if (network.isConnected()) {
 
-        new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
-            @Override
-            protected Boolean background() throws Exception {
-                InputStream inputStream = null;
-                String filename = null;
+            new ProgressTask<Boolean>(this, getString(R.string.sending_answer)) {
+                @Override
+                protected Boolean background() throws Exception {
+                    InputStream inputStream = null;
+                    String filename = null;
 
-                //Toast.makeText(this, "La uri es "+uri.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "La uri es "+uri.toString(), Toast.LENGTH_SHORT).show();
 
-                try
+                    try
 
-                {
-                    if (uri.toString().startsWith("file")) {
-                        try {
-                            inputStream = new FileInputStream(uri.toString().substring(7));
-                            String[] parts = uri.toString().split("/");
-                            filename = parts[parts.length - 1];
-                        } catch (FileNotFoundException ignored) {
+                    {
+                        if (uri.toString().startsWith("file")) {
+                            try {
+                                inputStream = new FileInputStream(uri.toString().substring(7));
+                                String[] parts = uri.toString().split("/");
+                                filename = parts[parts.length - 1];
+                            } catch (FileNotFoundException ignored) {
 
-                        }
-                    } else {
-                        inputStream = getContentResolver().openInputStream(uri);
-                        Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
-
-                        try {
-                            if (cursor != null && cursor.moveToFirst()) {
-                                filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
                             }
-                        } finally {
-                            if (cursor != null)
-                                cursor.close();
+                        } else {
+                            inputStream = getContentResolver().openInputStream(uri);
+                            Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
+
+                            try {
+                                if (cursor != null && cursor.moveToFirst()) {
+                                    filename = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+                                }
+                            } finally {
+                                if (cursor != null)
+                                    cursor.close();
+                            }
                         }
-                    }
 
 
-                    // Toast.makeText(context, "Name: " + filename, Toast.LENGTH_SHORT).show();
-                    return business.sendExercise(data.getUser().getId(), data.getExercise().getId(), inputStream, filename);
+                        // Toast.makeText(context, "Name: " + filename, Toast.LENGTH_SHORT).show();
+                        return business.sendExercise(data.getUser().getId(), data.getExercise().getId(), inputStream, filename);
 
-                } finally
+                    } finally
 
-                {
-                    if (inputStream != null) {
-                        try {
-                            inputStream.close();
-                        } catch (IOException ignored) {
+                    {
+                        if (inputStream != null) {
+                            try {
+                                inputStream.close();
+                            } catch (IOException ignored) {
 
+                            }
                         }
                     }
                 }
-            }
 
-            @Override
-            protected void onFinish(Boolean result) {
-                if (result)
-                    Toast.makeText(context, getString(R.string.send_ans_ok), Toast.LENGTH_SHORT).show();
-                else
-                    Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
-            }
-        }.execute();
+                @Override
+                protected void onFinish(Boolean result) {
+                    if (result)
+                        Toast.makeText(context, getString(R.string.send_ans_ok), Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(context, getString(R.string.send_ans_error), Toast.LENGTH_SHORT).show();
+                }
+            }.execute();
+        } else
+            Toast.makeText(this, R.string.no_internet, Toast.LENGTH_LONG).show();
     }
 
     @Override
