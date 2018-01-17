@@ -2,9 +2,9 @@ package eus.ehu.tta.practica.presentation;
 
 import android.os.Bundle;
 
-import eus.ehu.tta.practica.business.Exercise;
-import eus.ehu.tta.practica.business.Test;
-import eus.ehu.tta.practica.business.User;
+import eus.ehu.tta.practica.model.Exercise;
+import eus.ehu.tta.practica.model.Test;
+import eus.ehu.tta.practica.model.User;
 
 /**
  * Created by jontx on 06/01/2018.

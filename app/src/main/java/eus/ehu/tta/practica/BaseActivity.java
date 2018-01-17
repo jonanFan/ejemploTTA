@@ -6,8 +6,8 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import eus.ehu.tta.practica.business.BusinessServer;
-import eus.ehu.tta.practica.business.RestClient;
+import eus.ehu.tta.practica.model.BusinessServer;
+import eus.ehu.tta.practica.model.RestClient;
 import eus.ehu.tta.practica.presentation.Data;
 import eus.ehu.tta.practica.presentation.NetworkReceiver;
 

@@ -5,9 +5,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import eus.ehu.tta.practica.business.Exercise;
-import eus.ehu.tta.practica.business.Test;
-import eus.ehu.tta.practica.business.User;
+import eus.ehu.tta.practica.model.Exercise;
+import eus.ehu.tta.practica.model.Test;
+import eus.ehu.tta.practica.model.User;
 import eus.ehu.tta.practica.presentation.ProgressTask;
 
 public class MenuActivity extends BaseActivity {

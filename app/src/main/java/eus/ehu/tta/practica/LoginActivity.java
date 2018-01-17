@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import eus.ehu.tta.practica.business.User;
+import eus.ehu.tta.practica.model.User;
 import eus.ehu.tta.practica.presentation.ProgressTask;
 
 public class LoginActivity extends BaseActivity {

@@ -18,8 +18,8 @@ import android.widget.VideoView;
 
 import java.io.IOException;
 
-import eus.ehu.tta.practica.business.Choice;
-import eus.ehu.tta.practica.business.Test;
+import eus.ehu.tta.practica.model.Choice;
+import eus.ehu.tta.practica.model.Test;
 import eus.ehu.tta.practica.presentation.ProgressTask;
 import eus.ehu.tta.practica.view.AudioPlayer;
 import eus.ehu.tta.practica.view.VideoPlayer;

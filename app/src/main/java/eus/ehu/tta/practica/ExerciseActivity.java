@@ -25,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import eus.ehu.tta.practica.business.Exercise;
+import eus.ehu.tta.practica.model.Exercise;
 import eus.ehu.tta.practica.presentation.ProgressTask;
 
 public class ExerciseActivity extends BaseActivity {

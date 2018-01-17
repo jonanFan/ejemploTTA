@@ -1,4 +1,4 @@
-package eus.ehu.tta.practica.business;
+package eus.ehu.tta.practica.model;
 
 import android.util.Log;
 
